@@ -1,2 +1,8 @@
 SDLTest
-
+*.bmp
+callgrind*
+*~
+*.gch
+*.swp
+penmp
+*.out

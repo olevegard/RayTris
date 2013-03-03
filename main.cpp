@@ -1,76 +1,63 @@
-#include <SDL/SDL.h>
-#include <SDL/SDL_main.h>
 #include <iostream>
-#include "Vector2d.h"
+#include <string>
 
-char* doTracing();
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+ 
+#include "SceneObjectEffect.h"
+#include "RayTracer.h"
+#include "Sphere.h"
+//#include "Triangle.h"
+#include "CubeMap.h"
+//#include "Timer.h"
 
-vector2d square_tl( 40, 40 );
-vector2d square_br( 60, 60);
+/**
+ * Simple program that starts our raytracer
+ */
+int main(int argc, char *argv[]) {
+	try {
+		RayTracer* rt;
+		//Timer t;
+		rt = new RayTracer( 1600, 1200);
 
+		// Our different effects...
+		std::shared_ptr<SceneObjectEffect> color(new ColorEffect( Vector3f (0.0, 1.0, 0.0)));
+		std::shared_ptr<SceneObjectEffect> phong(new PhongEffect( Vector3f (0.0, 0.0, 10.0)));
+		std::shared_ptr<SceneObjectEffect> reflect(new Reflect( ));
+		std::shared_ptr<SceneObjectEffect> fresnel(new FresnelEffect( ));
 
-int main( int argc, char* args[] ) { 
+		// Our different objects
+		std::shared_ptr<SceneObject> s1(new Sphere(Vector3f(2.0f, 2.0f, 3.0f), 2.0f, reflect));
+		rt->addSceneObject(s1);
+		std::shared_ptr<SceneObject> s2(new Sphere(Vector3f( 0.0f, -2.0f, 3.0f), 1.0f, fresnel));
+		rt->addSceneObject(s2);
+		std::shared_ptr<SceneObject> s3(new Sphere( Vector3f (-2.0f, 2.0f, 3.0f), 2.0f, reflect));
+		rt->addSceneObject(s3);
+		//std::shared_ptr<SceneObject> s4(new Triangle(glm::vec3(2.0f, -3.0f, 2.0f), 3.0f, reflect));
+		//rt->addSceneObject(s4);
+		std::shared_ptr<SceneObject> s5( new CubeMap( 
+			"cubemaps/SaintLazarusChurch3/posx.jpg", "cubemaps/SaintLazarusChurch3/negx.jpg", 
+			"cubemaps/SaintLazarusChurch3/posy.jpg", "cubemaps/SaintLazarusChurch3/negy.jpg",
+			"cubemaps/SaintLazarusChurch3/posz.jpg", "cubemaps/SaintLazarusChurch3/negz.jpg"  ) );
+		rt->addSceneObject(s5);
 
-	//The images 
-	SDL_Surface* screen = NULL;
-	SDL_Surface* traced  = NULL;
+		//t.restart();
+		//std::cout << "Rendering...\n";
+		rt->render();
 
-	//Start SDL 
-	SDL_Init( SDL_INIT_EVERYTHING ); 
-
-	//Set up screen 
-	screen = SDL_SetVideoMode( 640, 480, 32, SDL_SWSURFACE );
-
-	char* pixels = doTracing();
-	// Create square surfeace
-	traced = SDL_CreateRGBSurfaceFrom( pixels, 640, 480, 32, 640 * 4, 0, 0, 0, 0);//0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF );
-
-	//Apply image to screen 
-	SDL_BlitSurface( traced, NULL, screen, NULL ); 
-
-	//Update Screen 
-	SDL_Flip( screen ); 
-
-	//Free the loaded image 
-	SDL_FreeSurface( traced ); 
-
-
-	//Pause 
-	SDL_Delay( 2000 );
-
-	//Quit SDL 
-	SDL_Quit(); 
-
-	delete[] pixels;
-	
-	return 0; 
-}
-
-char* doTracing()
-{
-	// Create pixel array
-	char* pixels = new char[640*480*4];
-
-	// Set all values to 0 ( black )
-	memset( pixels, 0, 640 * 480 * 4);
-
-	for ( int x = 0; x < 640 ; ++x )
-	{
-		for ( int y = 0; y < 480; ++y)
-		{
-
-			if ( 
-				( x >= square_tl.x && x <= square_br.x)
-				&& ( y >= square_tl.y && y <= square_br.y)
-			   )
-			{
-				// Set pixel ( x, y ) to 255, 255, 255 ( white )
-				memset( &pixels[ (  ( x + (  y * 640  )  ) *  4 ) + 0 ] , 255, 1 ); // Red
-				memset( &pixels[ (  ( x + (  y * 640  )  ) *  4 ) + 1 ] , 255, 1 ); // Green
-				memset( &pixels[ (  ( x + (  y * 640  )  ) *  4 ) + 2 ] , 255, 1 ); // Blue
-			}
-
-		}
+		//double elapsed = t.elapsed();
+		//std::cout << "Computed in " << elapsed << " seconds" <<  std::endl;
+		//std::cout << "Done, saving...\n";
+		rt->save("test", "bmp"); //We want to write out bmp's to get proper bit-maps (jpeg encoding is lossy)
+		//system("Pause"); 
+		//std::cout << "DONE!\n";
+		delete rt;
+	} catch (std::exception &e) {
+		std::string err = e.what();
+		std::cout << err.c_str() << std::endl;
+		std::cin.ignore();
+		return -1;
 	}
-	return pixels;
+	return 0;
 }
