@@ -122,7 +122,7 @@ public:
 	,	eta_diamond( 2.419 )
 	//,	eta0( eta_water )
 	//,	eta1( eta_air )
-	,	eta0( eta_diamond )
+	,	eta0( eta_pyrex )
 	,	eta1( eta_air )
 	,	reflectiveness( 0.9f )
 	{
@@ -148,22 +148,40 @@ public:
 	virtual ~FresnelEffect(){}
 	Vector3f rayTrace(Ray &ray, const float& t, const Vector3f& normal, RayTracerState& state) {
 
+		Vector3f normal_n = Math::normalize ( normal );
+		Vector3f dir_n = Math::normalize ( ray.getDirection()  );
 		// Calc dot to determine if we are entering or entering the material. 
-		float dot =  Math::dot( Math::normalize  ( ray.getDirection() ), normal);
+		//float dot =  Math::dot( Math::normalize  ( ray.getDirection() ), normal);
+		//float dot =  Math::dot( Math::normalize  ( ray.getDirection() ), ( normal));
+		//float dot =  Math::dot( Math::normalize  ( ray.getDirection() ), ( normal));
+
+		float dot =  Math::dot( dir_n,  normal_n) ;
 
 		// Entering materiall..
-		if ( dot < 0.0f ) {
+		if ( dot < 0.0f )
+		{
+			//Vector3f dirNormalized = Math::normalize( ray.getDirection);
 			// Calc refraction eta so we get right refraction angle
 			const float eta = eta0 / eta1; 
 			
 			// Calc fresnel term  using Schlick's approximation
-			//float R0 =  ( (( eta0 - eta1 ) /  ( eta0 + eta1 )) *  ( (eta0 - eta1) /  (eta0 + eta1)) );
-			float R0 =  (( eta0 - eta1 ) /  ( eta0 + eta1 ));
-			R0 *= R0;
-			float Rf = R0 + (1.0 - R0) * pow( ( 1.0 +  dot ), 5.0);
-
+			float R0 =  ( (( eta0 - eta1 ) /  ( eta0 + eta1 )) *  ( (eta0 - eta1) /  (eta0 + eta1)) );
+			//float R0 =  (( eta0 - eta1 ) /  ( eta0 + eta1 ));
+		//	R0 *= R0;
+			R0 *= -1.0f;
+			float Rf = R0 + (1.0 - R0) * pow( ( 1.0 + dot ), 5.0);
+			//float Rf = R0 + (1.0 - R0) * pow( ( 1.0 - dot ), 5.0);
+			/*
 			// Refract colour ( not muliplied with energy since it's not a reflection ) 
-			Ray ray_refract = ray.spawn(( t ), Math::refract( ray.getDirection(), normal, eta ),reflectiveness);
+			Ray ray_refract = ray.spawn(( t ), Math::refract( dir_n, normal_n, eta ),reflectiveness);
+			Vector3f refract = state.rayTrace(ray_refract); // Refract color
+			
+			// Relfect colour ( multiplied with energy since the rays loose energy per jump, which also effects the colour ) 
+			Ray ray_reflect = ray.spawn(( t ), Math::reflect( dir_n, normal_n), reflectiveness); 
+			Vector3f reflect = state.rayTrace(ray_reflect) * ray_reflect.getEnergy(); // Reflect color
+*/
+			// Refract colour ( not muliplied with energy since it's not a reflection ) 
+			Ray ray_refract = ray.spawn(( t ), Math::refract( dir_n, normal, eta ),reflectiveness);
 			Vector3f refract = state.rayTrace(ray_refract); // Refract color
 			
 			// Relfect colour ( multiplied with energy since the rays loose energy per jump, which also effects the colour ) 
@@ -171,35 +189,95 @@ public:
 			Vector3f reflect = state.rayTrace(ray_reflect) * ray_reflect.getEnergy(); // Reflect color
 
 			// Return mix of refract and reflect colour weighetd by the fresnel term
-			out_color = Math::mix(  refract  ,  reflect,  Rf); 
+			//out_color = Math::mix(  refract  ,  reflect,  Rf); 
+			//std::cout << "Rf___ : " << Rf << std::endl;
+			if ( fabs( Rf ) < 1.0f )
+			{
+				out_color = Math::mix(  refract  ,  reflect,  0.0f); 
+				//out_color = Math::mix(  refract  ,  reflect,  0.0f); 
+				//std::cout << "R0 entering : " << R0 << std::endl;
+				//std::cout << "dot : " << dot << std::endl;
+			}
+			else 
+			{
+				// This should not happen....
+				std::cout << "R0 entering : " << R0 << std::endl;
+				std::cout << "  eta0 : " << eta0 << std::endl;
+				std::cout << "  eta1 : " << eta1 << std::endl;
+				std::cout << "  eta : " << eta << std::endl;
+				std::cout << "RF entering : " << Rf << std::endl;
+				//std::cout << "t : " << t << std::endl;
+				std::cout << "dot : " << dot << std::endl;
+				std::cout << "normal : " << normal << std::endl;
+				std::cout << "dir : " << ray.getDirection() << std::endl;
+				//std::cout << "reflectiveness : " << reflectiveness << std::endl;
+				std::cin.ignore();
+				//out_color = Vector3f( 1.0f, 0.0f, 0.0f);
+				out_color = Math::mix(  refract  ,  reflect,  Rf); 
+			}
 			
 		 }  else { // exiting  
+			
 			// Calc refraction eta so we get right refraction angle
 			 // Oposite of the one for when we are entering due to the angle of the normal. 
 			 // ( the normal is mirrored of what it should be ) 
 			const float eta = eta1/eta0;
 
 			// Calc new dot product ( se above comment)
-			float dot_2 = Math::dot(  -normal, ray.getDirection()); 
+			//float dot_2 = Math::dot(  -normal, ray.getDirection()); 
+			float dot_2 =  Math::dot( Math::normalize  ( ray.getDirection() ), Math::normalize ( normal));
 
+			//NOTE: Rf is too high sometimes, should always be < 1.0f
 			// Calc fresnel term  using Schlick's approximation
 			// Opoosite, se comment aboce 
+			//float R0 =  (( eta0 - eta1 ) /  ( eta0 + eta1 ));
 			float R0 =   (( eta1 - eta0 ) /  ( eta1 + eta0 ));// *  (( eta1 - eta0) /  (eta1 + eta0 )) );
 			R0 *= R0;
 			//float Rf = R0 + (1.0 - R0) * pow( ( 1.0f -  dot ), 5.0f);
+			//
 			float Rf = R0 + (1.0 - R0) * pow( ( 1.0f -  dot_2 ), 5.0f);
-			
-
+/*
 			// Spawn reflect ray with mirrored normal ( to make the angle correct ) 
 			Ray ray_refract = ray.spawn((t ), Math::refract( ray.getDirection(),  normal, eta ) , reflectiveness);
 			Vector3f refract = state.rayTrace(ray_refract); // Refract color
-		
+*/		
+			// Spawn reflect ray with mirrored normal ( to make the angle correct ) 
+			Ray ray_refract = ray.spawn((t ), Math::refract( dir_n,  -normal_n, eta ) , reflectiveness);
+			Vector3f refract = state.rayTrace(ray_refract); // Refract color
+
 			// Relfect colour 
 			Ray ray_reflect = ray.spawn((t  ), Math::reflect(ray.getDirection(), normal ), reflectiveness); 
 			Vector3f reflect = state.rayTrace(ray_reflect) * ray_reflect.getEnergy(); // Reflect color
 
-			out_color = Math::mix(  refract  ,  reflect,  Rf); 
-
+			if ( fabs( Rf ) < 1.0f )
+			{
+				/*
+				std::cout << "R0  exiting : " << R0 << std::endl;
+				std::cout << "  eta0 : " << eta0 << std::endl;
+				std::cout << "  eta1 : " << eta1 << std::endl;
+				std::cout << "  eta : " << eta << std::endl;
+				*/
+				//std::cout << "R0 entering : " << R0 << std::endl;
+				out_color = Math::mix(  refract  ,  reflect,  0.0f); 
+				//out_color = refract;	
+				//out_color = reflect;	
+				//out_color.z = 1.0f;
+				//std::cin.ignore();
+			}
+			else 
+			{
+				// This should not happen....
+				std::cout << "eta : " << eta << std::endl;
+				std::cout << "R0 : " << R0 << std::endl;
+				std::cout << "Rf : " << Rf << std::endl;
+				std::cout << "t : " << t << std::endl;
+				std::cout << "dot : " << dot_2 << std::endl;
+				std::cout << "normal : " << normal << std::endl;
+				std::cout << "dir : " << ray.getDirection() << std::endl;
+				std::cout << "reflectiveness : " << reflectiveness << std::endl;
+				std::cin.ignore();
+				out_color = Vector3f( 0.0f, 0.0f, 1.0f);
+			}
 		}
 
 		return out_color; 

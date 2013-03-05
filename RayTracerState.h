@@ -39,7 +39,7 @@ public:
 
 		if (!ray.isValid()) 
 		{ 
-			std::cout << "ray killed\n"; 
+			//std::cout << "ray killed\n"; 
 			return Vector3f(0.0f);  
 		}
 		

@@ -28,12 +28,13 @@ int main(int argc, char *argv[]) {
 		std::shared_ptr<SceneObjectEffect> fresnel(new FresnelEffect( ));
 
 		// Our different objects
-		std::shared_ptr<SceneObject> s1(new Sphere(Vector3f(2.0f, 2.0f, 3.0f), 2.0f, reflect));
+		//std::shared_ptr<SceneObject> s1(new Sphere(Vector3f(2.0f, 2.0f, 3.0f), 2.0f, reflect));
+		std::shared_ptr<SceneObject> s1(new Sphere(Vector3f(2.0f, 2.0f, 3.0f), 2.0f, fresnel));
 		rt->addSceneObject(s1);
 		std::shared_ptr<SceneObject> s2(new Sphere(Vector3f( 0.0f, -2.0f, 3.0f), 1.0f, fresnel));
 		rt->addSceneObject(s2);
-		std::shared_ptr<SceneObject> s3(new Sphere( Vector3f (-2.0f, 2.0f, 3.0f), 2.0f, reflect));
-		rt->addSceneObject(s3);
+		//std::shared_ptr<SceneObject> s3(new Sphere( Vector3f (-2.0f, 2.0f, 3.0f), 2.0f, reflect));
+		//rt->addSceneObject(s3);
 		//std::shared_ptr<SceneObject> s4(new Triangle(glm::vec3(2.0f, -3.0f, 2.0f), 3.0f, reflect));
 		//rt->addSceneObject(s4);
 		std::shared_ptr<SceneObject> s5( new CubeMap( 

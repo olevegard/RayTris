@@ -1,5 +1,5 @@
 #include "Vector3f.h"
-
+#include <iostream>
 namespace Math
 {
 	Vector3f normalize( const Vector3f &vec )
@@ -32,8 +32,10 @@ namespace Math
 		float dotNormalVec = dot( normal, vec );
 		float k = 1.0f -  eta * eta  * ( 1.0f -  dotNormalVec * dotNormalVec);
 
-		if ( k < 0.0f ) 
+		if ( k < 0.0f )
+		{
 			return Vector3f(0.0f);
+		}
 		else
 			return ( eta * vec - ( eta * dotNormalVec + sqrt(k) ) * normal );
 	}

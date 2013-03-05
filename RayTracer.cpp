@@ -50,6 +50,7 @@ void RayTracer::render() {
 
 	//For every pixel, ray-trace using multiple CPUs
 #ifdef _OPENMP
+#pragma omp set nested
 #pragma omp parallel for
 	for (int j=0; j<static_cast<int>(fb->getHeight()); ++j) {
 #else
@@ -73,7 +74,7 @@ void RayTracer::render() {
 			
 			float xm = ( i - 0.25f ) * xConversion + screen.left;
 			float ym = ( j - 0.25f ) * yConversion + screen.bottom;
-
+			//std::cout << "coord : " << j << " , " << i  << std::endl;
 			
 			// Create our four rays ( on for each corner of the pixel ) 
 			Ray r1 = Ray(camPos, Vector3f(xp, yp ,-1.0f));
