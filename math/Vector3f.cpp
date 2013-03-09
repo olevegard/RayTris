@@ -5,8 +5,24 @@ namespace Math
 	Vector3f normalize( const Vector3f &vec )
 	{
 		float length = vec.getLength();
-		Vector3f vecRet( vec.x / length, vec.y / length, vec.z / length );
-		return vecRet;
+		if ( length == 1.0f ) 
+		{
+			//std::cout << "allready normalized!\n";
+			return vec;
+		} else
+		{
+			//std::cout << "needs normalization\n";
+
+			Vector3f vecRet( vec.x / length, vec.y / length, vec.z / length );
+
+			/*std::cout << "normaiing : "
+					<< "\n\tLenght : " << length
+					<< "\n\tVector : " << vec
+					<< "\n\tResult : " << vecRet << std::endl; 
+					*/
+			return vecRet;
+		}
+
 	}
 
 	float dot( const Vector3f &vec1, const Vector3f &vec2 )
@@ -68,11 +84,16 @@ namespace Math
 		v.x = ( vec.x * eta ) + ( normal.x * eta2 );
 		v.y = ( vec.y * eta ) + ( normal.y * eta2 );
 		v.z = ( vec.z * eta ) + ( normal.z * eta2 );
-
+		std::cout << "mix" 
+			<< "\n\tV1    : " << vec
+			<< "\n\tV2    : " << normal
+			<< "\n\teta   : " << eta
+			<< "\n\t1-eta : " << eta2
+			<< "\n\tres : " << v << std::endl;
 		return v;
 	}
-*/
 
+*/
 	double max( double val1, double val2)
 	{
 		return ( val1 > val2 ? val1 : val2 );

@@ -66,6 +66,7 @@ public:
 			return scene.at(k_min)->rayTrace(ray, t_min, *this);
 		}
 		else {
+			std::cout << "no intersection\n";
 			return Vector3f(0.0 );
 		}
 	}

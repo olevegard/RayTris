@@ -121,6 +121,7 @@ inline Vector3f operator/=( Vector3f vec, const Vector3f &vec2)
 inline Vector3f operator/=( Vector3f vec, float f )
 {
 	Vector3f v( vec.x /=  f, vec.y /= f, vec.z /= f);
+	//Vector3f v( vec.x /  f, vec.y / f, vec.z / f);
 	return v;
 }
 

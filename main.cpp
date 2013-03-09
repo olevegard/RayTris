@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
 	try {
 		RayTracer* rt;
 		//Timer t;
+		//rt = new RayTracer( 3200, 2400);
 		rt = new RayTracer( 1600, 1200);
 
 		// Our different effects...
@@ -28,23 +29,23 @@ int main(int argc, char *argv[]) {
 		std::shared_ptr<SceneObjectEffect> fresnel(new FresnelEffect( ));
 
 		// Our different objects
-		//std::shared_ptr<SceneObject> s1(new Sphere(Vector3f(2.0f, 2.0f, 3.0f), 2.0f, reflect));
-		std::shared_ptr<SceneObject> s1(new Sphere(Vector3f(2.0f, 2.0f, 3.0f), 2.0f, fresnel));
-		rt->addSceneObject(s1);
-		std::shared_ptr<SceneObject> s2(new Sphere(Vector3f( 0.0f, -2.0f, 3.0f), 1.0f, fresnel));
-		rt->addSceneObject(s2);
-		//std::shared_ptr<SceneObject> s3(new Sphere( Vector3f (-2.0f, 2.0f, 3.0f), 2.0f, reflect));
-		//rt->addSceneObject(s3);
-		//std::shared_ptr<SceneObject> s4(new Triangle(glm::vec3(2.0f, -3.0f, 2.0f), 3.0f, reflect));
-		//rt->addSceneObject(s4);
-		std::shared_ptr<SceneObject> s5( new CubeMap( 
+		std::shared_ptr<SceneObject> sphereFresnel1(new Sphere(Vector3f( 2.0f, -2.0f, 3.0f), 1.0f, fresnel));
+		std::shared_ptr<SceneObject> sphereReflect1(new Sphere(Vector3f( -2.0f, 0.0f, 3.0f), 2.0f, fresnel));
+		std::shared_ptr<SceneObject> sphereReflect2(new Sphere( Vector3f (-4.0f, -2.0f, 3.0f), 2.0f, reflect));
+		std::shared_ptr<SceneObject> cubeMap( new CubeMap( 
 			"cubemaps/SaintLazarusChurch3/posx.jpg", "cubemaps/SaintLazarusChurch3/negx.jpg", 
 			"cubemaps/SaintLazarusChurch3/posy.jpg", "cubemaps/SaintLazarusChurch3/negy.jpg",
 			"cubemaps/SaintLazarusChurch3/posz.jpg", "cubemaps/SaintLazarusChurch3/negz.jpg"  ) );
-		rt->addSceneObject(s5);
+
+		//std::shared_ptr<SceneObject> s4(new Triangle(glm::vec3(2.0f, -3.0f, 2.0f), 3.0f, reflect));
+		//
+		rt->addSceneObject(sphereReflect1);
+		//rt->addSceneObject(sphereReflect2);
+		rt->addSceneObject(sphereFresnel1);
+		rt->addSceneObject(cubeMap);
 
 		//t.restart();
-		//std::cout << "Rendering...\n";
+		std::cout << "Rendering...\n";
 		rt->render();
 
 		//double elapsed = t.elapsed();

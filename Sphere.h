@@ -34,6 +34,8 @@ public:
 		float a = Math::dot(d, d);
 		float b = 2.0f * Math::dot(d, origToCenter);
 		float c = Math::dot(origToCenter, origToCenter) - radiusSQ;
+		//float b = 2.0f * Math::dot(d, r.getOrigin());
+		//float c = Math::dot(r.getOrigin(), r.getOrigin() ) - radiusSQ;
 		
 	
 		// Calculate collision  (b ^ 2 - 4ac  )
@@ -82,7 +84,7 @@ public:
 	const Vector3f computeNormal(const Ray& ray, const float& t) 
 	{
 		// Conpute normal
-		Vector3f normal = (ray.getOrigin() +  ( ray.getDirection() * t) ) - radius;
+		Vector3f normal = (ray.getOrigin() +  ( ray.getDirection() * t) ) - center;
 		
 		// Divide by radius ( nornalize ) 
 		normal /= radius; 

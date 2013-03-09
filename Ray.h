@@ -19,7 +19,7 @@ public:
 		this->direction = direction;
 	
 		// Initialize energy to 1.0 
-		energy = 0.5f; 
+		energy = 0.9f;
 		min_energy = 0.02f;
 	}
 
