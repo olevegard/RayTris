@@ -6,3 +6,6 @@ callgrind*
 *.swp
 penmp
 *.out
+*RayTris*
+backup*
+cubemaps*

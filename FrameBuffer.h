@@ -1,5 +1,4 @@
-#ifndef _FRAMEBUFFER_HPP__
-#define _FRAMEBUFFER_HPP__
+#pragma once
 
 #include <vector>
 
@@ -28,18 +27,14 @@ public:
 	/**
 	  * Sets the pixel at (i, j) to the color (r, g, b).
 	  */
-	inline void setPixel(unsigned int i, unsigned int j, Vector3f color) {
-
+	inline void setPixel(unsigned int i, unsigned int j, Vector3f color)
+	{
 
 		unsigned int index = 3*(i+j*width);
-
 
 		data.at(index) = color.x;
 		data.at(index+1) = color.y;
 		data.at(index+2) = color.z;
-
-
-
 /*
 		data_test[ index ] = color.x;
 		data_test[ index + 1 ] = color.x;
@@ -51,8 +46,6 @@ public:
 private:
 	std::vector<float> data;
 	//float data_test[1600 * 1200 * 3];
-	float data_test[3200 * 2400 * 3];
+	float data_test[400 * 300 * 3];
 	unsigned int width, height;
 };
-
-#endif

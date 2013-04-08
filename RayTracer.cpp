@@ -143,7 +143,7 @@ void RayTracer::save(std::string basename, std::string extension) {
 	//Find a unique filename...
 	for (i=0; i<10000; ++i) {
 		filename.str("");
-		filename << basename << std::setw(4) << std::setfill('0') << i << "." << extension;
+		filename << "images\\" << basename << std::setw(4) << std::setfill('0') << i << "." << extension;
 		if (stat(filename.str().c_str(), &buffer) != 0) break;
 	}
 

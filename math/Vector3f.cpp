@@ -55,15 +55,46 @@ namespace Math
 		else
 			return ( eta * vec - ( eta * dotNormalVec + sqrt(k) ) * normal );
 	}
-
+	Vector3f refract_test( const Vector3f &vec, const Vector3f &normal, float eta0, float eta1 )
+	{
+		float eta = eta0 / eta1;
+		float dotNormalVec = -dot( normal, vec );
+		float k =  eta * eta  * ( 1.0f -  dotNormalVec * dotNormalVec);
+/*
+		std::cout << "\trefracting...\n"
+			<< "\t\tinput vector : " << vec << std::endl
+			<< "\t\tnormal vector: " << normal << std::endl
+			<< "\t\teta          : " << eta << std::endl
+			<< "\tcompting....\n"
+			<< "\t\tdotNormalVec : " << dotNormalVec << std::endl
+			<< "\t\tk            : " << k << std::endl
+			<< "\t\treturn val   : " << ( eta * vec - ( eta * dotNormalVec + sqrt(k) ) * normal ) << std::endl
+			<< "\t\t(eta * vec ) : " << eta * vec << std::endl
+			<< "\t\teta * dotNormalVec * sqrt(k) " << eta * dotNormalVec + sqrt(k) << std::endl
+			<< "==========================================================================\n\n";
+			*/
+		if ( k > 1.0f )
+		{
+			std::cout << "Total inner reflection...\n";
+			return Vector3f(0.0f);
+		}
+		
+		float cosT = sqrt( 1.0f - k );
+		return eta * vec + ( eta * dotNormalVec - cosT );
+	}
 	Vector3f min( const Vector3f &vec1, const Vector3f &vec2)
 	{
 		return ( vec1.getLength() > vec2.getLength() ? vec1 : vec2 );
 	}
 
 
+	Vector3f mix( const Vector3f &vec, const Vector3f &normal, float eta )
+	{
+		return Vector3f( vec + (  (normal - vec) * eta ) );
+	}
 
 	
+/*	
 	Vector3f mix( const Vector3f &vec, const Vector3f &normal, float eta )
 	{
 		float eta2 = 1.0f - eta;
@@ -75,7 +106,6 @@ namespace Math
 
 		return v;
 	}
-/*	
 	Vector3f mix( const Vector3f &vec, const Vector3f &normal, float eta )
 	{
 		float eta2 = 1.0f - eta;

@@ -69,6 +69,11 @@ inline bool operator==( const Vector3f &vec1, const Vector3f &vec2)
 	return ( vec1.x == vec2.x && vec1.y == vec2.y && vec1.z == vec2.z );
 }
 
+inline bool operator!=( const Vector3f &vec1, const Vector3f &vec2)
+{
+	return !( vec1 == vec2);
+}
+
 inline std::ostream& operator<<(std::ostream& stream, const Vector3f& pos)
 {
 	stream << pos.x << " , " << pos.y << " , " << pos.z;
@@ -125,6 +130,13 @@ inline Vector3f operator/=( Vector3f vec, float f )
 	return v;
 }
 
+inline Vector3f operator/( Vector3f vec, float f )
+{
+	Vector3f v( vec.x /  f, vec.y / f, vec.z / f);
+	//Vector3f v( vec.x /  f, vec.y / f, vec.z / f);
+	return v;
+}
+
 namespace Math
 {
 	Vector3f normalize( const Vector3f &vec );
@@ -134,6 +146,8 @@ namespace Math
 	Vector3f reflect( const Vector3f &vec, const Vector3f &normal );
 	
 	Vector3f refract( const Vector3f &vec, const Vector3f &normal, float eta );
+
+	Vector3f refract_test( const Vector3f &vec, const Vector3f &normal, float eta0, float eta1 );
 
 	Vector3f min( const Vector3f &vec1, const Vector3f &vec2);
 

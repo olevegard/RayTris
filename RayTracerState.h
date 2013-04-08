@@ -47,12 +47,15 @@ public:
 		//This is essentially just ray-casting
 		for (unsigned int k=0; k<scene.size(); ++k) 
 		{
-//			
 			t = scene.at(k)->intersect(ray);
 			//std::cout << "t : " << t << std::endl;
 
 			if (t > z_offset && t <= t_min) 
 			{
+				if ( k == 0 )
+				{
+					//std::cout << "hitting sphere...\n";
+				}
 				//std::cout << "RaytracerState::rayTrace2...\n";
 				k_min = k;
 				t_min = t;

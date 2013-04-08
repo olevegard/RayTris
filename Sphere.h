@@ -87,7 +87,7 @@ public:
 		Vector3f normal = (ray.getOrigin() +  ( ray.getDirection() * t) ) - center;
 		
 		// Divide by radius ( nornalize ) 
-		normal /= radius; 
+		//normal /= radius; 
 
 		return normal;
 	}
