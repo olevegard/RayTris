@@ -120,10 +120,10 @@ public:
 	,	eta_ethanol( 1.361 )
 	,	eta_pyrex( 1.470 )
 	,	eta_diamond( 2.419 )
-	,	eta0( eta_air )
+	,	eta0( eta_diamond )
 	//,	eta1( eta_some_test )
-	,	eta1( eta_diamond )
-	//,	eta1( eta_carbondioxide )
+	//,	eta1( eta_pyrex )
+	,	eta1( eta_air )
 	//,	eta1( 1.25 )
 	//,	eta0( eta_water )
 	//,	eta1( eta_air )
@@ -181,31 +181,28 @@ public:
 			// Air to water... ( eta0 to eta1 )
 			float Rf = R01 + (1.0 - R01) * pow( ( 1.0 - fabs( dot ) ), 5.0);
 			
-			//eta01 = eta1 / eta0;
-			// Relfect colour ( multiplied with energy since the rays loose energy per jump, which also effects the colour ) 
+			// Calc reflect 
 			Ray ray_reflect = ray.spawn(( t * 1.00000000001 ), Math::reflect( dir_n, normal_n ), reflectiveness); 
 			Vector3f reflect = state.rayTrace(ray_reflect) * ray_reflect.getEnergy(); // Reflect color
-			
-			//Ray ray_refract = ray.spawn(( t * 1.0000000001 ), Math::refract( normal_n, dir_n, eta01 ),reflectiveness);
-			//Ray ray_refract = ray.spawn( (t * 1.00000000001 ), Math::refract_print( dir_n, normal_n, eta01), reflectiveness);
-			//Vector3f refract = state.rayTrace(ray_refract); // Refract color
-	
-			//Vector3f refractDir = Math::refract( normal_n, dir_n, eta01 ) ;
-			//Vector3f refractDir = Math::refract( dir_n,normal_n,  ( 1.0f -  eta01 ) ) ; // Previous
+		
+			// Calc refract direction
 			Vector3f refractDir = Math::refract( dir_n,normal_n,  eta01 ) ;
+
+			// Check for total inner refraction
+			if ( refractDir.x == 0.0f && refractDir.y == 0.0f && refractDir.z == 0 )
+				return reflect;// Refracts most
+			
+
+			// Calculate refraction
 			Ray ray_refract = ray.spawn(( t * 1.0000000001 ), refractDir, reflectiveness);
 			Vector3f refract = state.rayTrace(ray_refract); // Refract color
+	
+			// reflect - refract
+			// reflect - reflect
+			// Calc final color
+			out_color = Math::mix( reflect, refract, Rf);  // Refraction 
+			//out_color = Math::mix( refract, refract, Rf);  // Refraction 
 
-			// Return mix of refract and reflect colour weighetd by the fresnel term
-			//out_color = refract;// Does not work 100%
-			//out_color = reflect;// Works 100%
-			if ( refract.x != 0.0f || refract.y == 0.0f || refract.z == 0 )
-				out_color = Math::mix( refract, reflect, Rf); // Refracts most
-			else
-				out_color =  reflect;// Refracts most
-			//out_color = Math::mix( reflect, refract, Rf); // Reflects most
-			//std::cout << "entering Rf : " << Rf << std::endl;
-			
 			if (  Rf >= 1.0f && Rf <= 0.0f )
 			{
 				std::cout << "entering Rf : " << Rf << std::endl;
@@ -222,25 +219,21 @@ public:
 			// Calc fresnel term  using Schlick's approximation
 			float Rf = R01 + (1.0 - R01) * pow( ( 1.0 - fabs ( dot ) ), 5.0);
 
-			// Spawn reflect ray with mirrored normal ( to make the angle correct ) 
-			//Ray ray_refract = ray.spawn( (t * 1.00000000001 ), Math::refract( dir_n, -normal_n, eta01), reflectiveness);
-			//Vector3f refract = state.rayTrace(ray_refract); // Refract color
-
-			Vector3f dirRefract = Math::refract( dir_n, -normal_n,  ( /* 1 - */eta01  ) );
-			Ray ray_refract = ray.spawn((t * 1.00000000001 ), dirRefract , reflectiveness);
-			Vector3f refract = state.rayTrace(ray_refract); // Refract color
-
-			// Relfect colour ( working )
+			// Relfect colour
 			Ray ray_reflect = ray.spawn((t  * 1.0000000001), Math::reflect(dir_n, -normal_n), reflectiveness); 
 			Vector3f reflect = state.rayTrace(ray_reflect) * ray_reflect.getEnergy(); // Reflect color
+			
+			Vector3f refractDir = Math::refract( dir_n, -normal_n,  ( /* 1 - */eta01  ) );
 
-			if ( refract.x != 0.0f && refract.y != 0.0f && refract.z != 0 )
-				out_color = Math::mix( refract, reflect, Rf); // Refracts most
-			else
-				out_color =  reflect;// Total inner reflection 
+			// Check for total inner refraction
+			if ( refractDir.x == 0.0f && refractDir.y == 0.0f && refractDir.z == 0 )
+				return reflect;
 
-			//out_color = Math::mix( refract, reflect, Rf); // Reflection 
-			//out_color = Math::mix( reflect, refract, Rf);  // Refraction 
+			Ray ray_refract = ray.spawn((t * 1.00000000001 ), refractDir , reflectiveness);
+			Vector3f refract = state.rayTrace(ray_refract); // Refract color
+
+			out_color = Math::mix( reflect, refract, Rf);
+
 			if ( Rf >= 1.0f && Rf <= 0.0f)
 			{
 				std::cout << "exitig Rf : " << Rf << std::endl;
