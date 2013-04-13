@@ -143,6 +143,15 @@ namespace Math
 
 	float dot( const Vector3f &vec1, const Vector3f &vec2 );
 
+	Vector3f cross( const Vector3f &v1, const Vector3f &v2 );
+	Vector3f cross_points( const Vector3f &v1, const Vector3f &v2, const Vector3f &v3 );
+	Vector3f cross_points( Vector3f* v );
+
+
+	void cross( const Vector3f &v1, const Vector3f &v2, Vector3f &ret );
+	void cross_points( const Vector3f &v1, const Vector3f &v2, const Vector3f &v3 , Vector3f &ret);
+	void cross_points( Vector3f* v, Vector3f &ret );
+
 	Vector3f reflect( const Vector3f &vec, const Vector3f &normal );
 	
 	Vector3f refract( const Vector3f &vec, const Vector3f &normal, float eta );

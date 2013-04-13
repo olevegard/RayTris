@@ -56,13 +56,13 @@ public:
 				{
 					//std::cout << "hitting sphere...\n";
 				}
-				//std::cout << "RaytracerState::rayTrace2...\n";
 				k_min = k;
 				t_min = t;
 			}
 		}
 
-		if (k_min >= 0) {
+		if (k_min >= 0)
+		{
 			//glm::vec3 collision_point = glm::vec3( ray.getOrigin() + ray.getDirection() * glm::vec3(t_min) ); 
 			//glm::vec3 reflected = glm::vec2( glm::reflect(ray.
 			//std::cout << "Spawning new ray\n";

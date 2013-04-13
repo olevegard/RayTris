@@ -122,8 +122,9 @@ public:
 	,	eta_diamond( 2.419 )
 	,	eta0( eta_air )
 	//,	eta1( eta_some_test )
-	//,	eta1( eta_diamond )
-	,	eta1( eta_carbondioxide )
+	,	eta1( eta_diamond )
+	//,	eta1( eta_carbondioxide )
+	//,	eta1( 1.25 )
 	//,	eta0( eta_water )
 	//,	eta1( eta_air )
 	//,	eta0( eta_pyrex )
@@ -198,7 +199,10 @@ public:
 			// Return mix of refract and reflect colour weighetd by the fresnel term
 			//out_color = refract;// Does not work 100%
 			//out_color = reflect;// Works 100%
-			out_color = Math::mix( refract, reflect, Rf); // Refracts most
+			if ( refract.x != 0.0f || refract.y == 0.0f || refract.z == 0 )
+				out_color = Math::mix( refract, reflect, Rf); // Refracts most
+			else
+				out_color =  reflect;// Refracts most
 			//out_color = Math::mix( reflect, refract, Rf); // Reflects most
 			//std::cout << "entering Rf : " << Rf << std::endl;
 			
@@ -230,10 +234,12 @@ public:
 			Ray ray_reflect = ray.spawn((t  * 1.0000000001), Math::reflect(dir_n, -normal_n), reflectiveness); 
 			Vector3f reflect = state.rayTrace(ray_reflect) * ray_reflect.getEnergy(); // Reflect color
 
-			//out_color = -normal;
-			// out_color = refract;// Does not work 100%
-			//out_color = reflect;// Not fully tested...
-			out_color = Math::mix( refract, reflect, Rf); // Reflection 
+			if ( refract.x != 0.0f && refract.y != 0.0f && refract.z != 0 )
+				out_color = Math::mix( refract, reflect, Rf); // Refracts most
+			else
+				out_color =  reflect;// Total inner reflection 
+
+			//out_color = Math::mix( refract, reflect, Rf); // Reflection 
 			//out_color = Math::mix( reflect, refract, Rf);  // Refraction 
 			if ( Rf >= 1.0f && Rf <= 0.0f)
 			{

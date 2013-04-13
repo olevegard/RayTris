@@ -33,15 +33,63 @@ namespace Math
 		return ( vec1.x * vec2.x) + ( vec1.y * vec2.y ) + ( vec1.z * vec2.z);
 	}
 
+	Vector3f cross( const Vector3f &v1, const Vector3f &v2 )
+	{
+		Vector3f res;
+		res.x = ( v1.y * v2.z ) - ( v1.z * v2.y );
+		res.y = ( v1.z * v2.x ) - ( v1.x * v2.z );
+		res.z = ( v1.x * v2.y ) - ( v1.y * v2.x );
+
+		if ( res.x == 0.0f && res.y == 0.0f && res.z == 0.0f )
+		{
+			res = Vector3f( 0.0f );
+		}
+
+
+		return res;
+	}
+
+	Vector3f cross_points( const Vector3f &v1, const Vector3f &v2, const Vector3f &v3 )
+	{
+		Vector3f cross1 = v1 - v2;
+		Vector3f cross2 = v1 - v3;
+		return cross( cross1, cross2 );
+	}
+
+	Vector3f cross_points( Vector3f* v )
+	{
+		Vector3f cross1 = v[0] - v[1];
+		Vector3f cross2 = v[0] - v[2];
+		return cross( cross1, cross2 );
+	}
 	Vector3f reflect( const Vector3f &vec, const Vector3f &normal )
 	{
 		float dotProduct = 2 * dot( normal, vec );
 		Vector3f v = normal * dotProduct;
 		v = vec - v;
 		return v;
-
 	}
 	
+	void cross( const Vector3f &v1, const Vector3f &v2, Vector3f &ret )
+	{
+		ret.x = ( v1.y * v2.z ) - ( v1.z * v2.y );
+		ret.y = ( v1.z * v2.x ) - ( v1.x * v2.z );
+		ret.z = ( v1.x * v2.y ) - ( v1.y * v2.x );
+
+		if ( ret.x == 0.0f && ret.y == 0.0f && ret.z == 0.0f )
+		{
+			ret = Vector3f( 0.0f );
+		}
+
+	}
+	void cross_points( const Vector3f &v1, const Vector3f &v2, const Vector3f &v3 , Vector3f &ret);
+	void cross_points( Vector3f* v, Vector3f &ret )
+	{
+		Vector3f cross1 = v[0] - v[1];
+		Vector3f cross2 = v[0] - v[2];
+		ret = cross( cross1, cross2 );
+
+	}
 	
 	Vector3f refract( const Vector3f &vec, const Vector3f &normal, float eta )
 	{
