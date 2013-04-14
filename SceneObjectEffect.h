@@ -227,13 +227,13 @@ public:
 			Ray ray_reflect = ray.spawn((t  * 1.00001), Math::reflect(dir_n, normal_n), reflectiveness); 
 			Vector3f reflect = state.rayTrace(ray_reflect) * ray_reflect.getEnergy(); // Reflect color
 			
-			Vector3f refractDir = Math::refract( dir_n, -normal_n,  ( /* 1 - */eta01  ) );
+			Vector3f refractDir = Math::refract( dir_n, normal_n,  ( /* 1 - */eta01  ) );
 
 			// Check for total inner refraction
 			//if ( refractDir.x == 0.0f && refractDir.y == 0.0f && refractDir.z == 0 )
 				//return reflect;
 
-			Ray ray_refract = ray.spawn((t * 1.00001 ), refractDir , reflectiveness);
+			Ray ray_refract = ray.spawn((t * 1.00001 ), -refractDir , reflectiveness);
 			Vector3f refract = state.rayTrace(ray_refract); // Refract color
 
 			//out_color = Math::mix2( reflect, refract, Rf);
