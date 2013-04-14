@@ -39,7 +39,7 @@ public:
 
 		if (!ray.isValid()) 
 		{ 
-			//std::cout << "ray killed\n"; 
+			std::cout << "Ray killed\n";
 			return Vector3f(0.0f);  
 		}
 		
@@ -66,6 +66,7 @@ public:
 			//glm::vec3 collision_point = glm::vec3( ray.getOrigin() + ray.getDirection() * glm::vec3(t_min) ); 
 			//glm::vec3 reflected = glm::vec2( glm::reflect(ray.
 			//std::cout << "Spawning new ray\n";
+			//std::cout << "\tCollision with id ; " << k_min << std::endl;
 			return scene.at(k_min)->rayTrace(ray, t_min, *this);
 		}
 		else {

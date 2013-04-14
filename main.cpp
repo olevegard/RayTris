@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 		RayTracer* rt;
 		//Timer t;
 		//rt = new RayTracer( 400, 300);
-		//rt = new RayTracer( 800, 600);
+		//rt = new RayTracer( 800, 600)
 		//rt = new RayTracer( 3200, 2400);
 		rt = new RayTracer( 1600, 1200);
 
@@ -32,11 +32,13 @@ int main(int argc, char *argv[]) {
 		std::shared_ptr<SceneObjectEffect> fresnel(new FresnelEffect( ));
 
 		// Our different objects
-		std::shared_ptr<SceneObject> sphere1(new Sphere(Vector3f( -4.25f, -2.125f,  -5.0f), 2.0f,  fresnel ));
+		std::shared_ptr<SceneObject> sphere1(new Sphere(Vector3f( -9.0f, 0.0f,  -9.0f), 8.0f,  fresnel ));
 		std::shared_ptr<SceneObject> cubeReflect1(new Cube(Vector3f( -4.25f, -2.125f,  -5.0f), 2.0f,  fresnel ));
 		std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(  0.0f, -2.125f,  -5.0f), 2.0f,  fresnel ));
 		std::shared_ptr<SceneObject> cubeReflect3(new Cube(Vector3f(  0.0f,  2.125f,  -5.0f), 2.0f,  fresnel ));
 		std::shared_ptr<SceneObject> cubeReflect4(new Cube(Vector3f(  4.25f,  2.125f,  -5.0f), 2.0f,  fresnel ));
+
+		std::shared_ptr<SceneObject> cubeReflect(new Cube(Vector3f(  0.0f,  0.0f,  -3.0f), 5.0f,  fresnel ));
 
 		/*
 		std::shared_ptr<SceneObject> cubeReflect5(new Cube(Vector3f( -2.125f, -2.125f,  -15.0f), 2.0f,  fresnel ));
@@ -56,7 +58,7 @@ int main(int argc, char *argv[]) {
 			"cubemaps/SaintLazarusChurch3/posy.jpg", "cubemaps/SaintLazarusChurch3/negy.jpg",
 			"cubemaps/SaintLazarusChurch3/posz.jpg", "cubemaps/SaintLazarusChurch3/negz.jpg"  ) );
 
-		rt->addSceneObject( cubeReflect2 );
+		//rt->addSceneObject( cubeReflect );
 		rt->addSceneObject( sphere1 );
 /*
 		rt->addSceneObject( cubeReflect1 );

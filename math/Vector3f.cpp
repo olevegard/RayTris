@@ -140,6 +140,11 @@ namespace Math
 	{
 		return Vector3f( vec + (  (normal - vec) * eta ) );
 	}
+	
+	Vector3f mix2( const Vector3f &vec, const Vector3f &normal, float eta )
+	{
+		return Vector3f( ( vec * eta ) + ( normal * ( 1.0f - eta ) ) );
+	}
 
 	
 /*	

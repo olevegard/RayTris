@@ -161,6 +161,7 @@ namespace Math
 	Vector3f min( const Vector3f &vec1, const Vector3f &vec2);
 
 	Vector3f mix( const Vector3f &vec, const Vector3f &normal, float eta );
+	Vector3f mix2( const Vector3f &vec, const Vector3f &normal, float eta );
 
 	double max( double val1, double val2);
 

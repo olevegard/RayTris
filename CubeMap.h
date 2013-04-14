@@ -53,6 +53,8 @@ public:
 		float x = fabs(dir.x);
 		float y = fabs(dir.y);
 		float z = fabs(dir.z);
+
+		//std::cout << "\tcollisio with cube map at : " << dir << std::endl;
 /*	
 		// Find the largest absolute value 
 		double largest = 0.0;

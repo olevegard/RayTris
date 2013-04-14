@@ -39,7 +39,7 @@ public:
 					found = true;
 					f_min = f;
 					
-					normal = -cube[i].normal;
+					normal = cube[i].normal;
 
 					if ( i == 4 || i == 3 ) 
 					{
@@ -78,7 +78,7 @@ public:
 				return cube[i].normal;
 		}
 		*/
-		return normal;
+		return -normal;
 	}
 
 	Vector3f rayTrace(Ray &ray, const float& t, RayTracerState& state)
