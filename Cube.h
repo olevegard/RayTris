@@ -19,6 +19,9 @@ public:
 		cube[3].init( BOTTOM, center, radius);
 		cube[4].init( LEFT, center, radius);
 		cube[5].init( RIGHT, center, radius);
+
+		std::cout << "Radius : " << radius << std::endl;
+		std::cout << "Center : " << center << std::endl;
 	}
 
 	virtual ~Cube(){}
@@ -29,7 +32,6 @@ public:
 		float f_min = f;
 		bool found = false;
 		
-		//for ( int i = 0; i < 6; ++i ) 
 		for ( int i = 0; i < 6; ++i ) 
 		{
 			if ( cube[i].intersect( ray, f ))
@@ -40,21 +42,11 @@ public:
 					f_min = f;
 					
 					normal = cube[i].normal;
-
-					if ( i == 4 || i == 3 ) 
-					{
-						//normal = cube[2].normal;
-						//std::cout << "normal : " << normal << std::endl;
-					}
-					//if ( i == 4 ) normal = cube[2].normal;
-					//if ( i == 3 ) normal = cube[2].normal;
 				}
 			}
 		}
 		
 		// 3, 4 : partly unclean
-		//normal = cube[5].normal;
-
 		if ( found && f_min < 99.0f )
 		{
 			return f_min;
@@ -68,7 +60,6 @@ public:
 	  */
 	const Vector3f computeNormal(const Ray& ray, const float& t)
 	{
-		/*
 		// Calc ray intersect point
 		Vector3f point = ray.getOrigin() + ( ray.getDirection() * t );
 
@@ -77,8 +68,8 @@ public:
 			if ( cube[i].CheckFaceCollision( point ) )
 				return cube[i].normal;
 		}
-		*/
-		return -normal;
+		
+		return normal;
 	}
 
 	Vector3f rayTrace(Ray &ray, const float& t, RayTracerState& state)

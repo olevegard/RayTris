@@ -247,20 +247,25 @@ private:
 	  */
 	static void loadImage(std::string filename, texture& tex) {
 
-		std::cout << "loading : " << filename << std::endl;
+		std::cout << "loading : " << filename;
 		ILuint ImageName;
 
 		ilGenImages(1, &ImageName); // Grab a new image name.
 		ilBindImage(ImageName); 
 		
-		if (!ilLoadImage(filename.c_str())) {
+		if (!ilLoadImage(filename.c_str()))
+		{
 			std::cout << "failed to load : " << filename << std::endl;
 			ILenum e;
 			std::stringstream error;
-			while ((e = ilGetError()) != IL_NO_ERROR) {
+
+			while ((e = ilGetError()) != IL_NO_ERROR)
+			{
 				error << e << ": " << iluErrorString(e) << std::endl;
 			}
+
 			ilDeleteImages(1, &ImageName); // Delete the image name. 
+
 			throw std::runtime_error(error.str());
 		}
 
@@ -269,7 +274,7 @@ private:
 		tex.width = ilGetInteger(IL_IMAGE_WIDTH); // getting image width
 		tex.height = ilGetInteger(IL_IMAGE_HEIGHT); // and height
 
-		std::cout << "size : " << tex.width << " , " << tex.height << std::endl;
+		std::cout << " size : " << tex.width << " , " << tex.height << std::endl;
 		tex.data.resize(tex.width*tex.height*3);
 		
 		ilCopyPixels(0, 0, 0, tex.width, tex.height, 1, IL_RGB, IL_FLOAT, tex.data.data());

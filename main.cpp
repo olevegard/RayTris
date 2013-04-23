@@ -28,38 +28,61 @@ int main(int argc, char *argv[]) {
 		// Our different effects...
 		std::shared_ptr<SceneObjectEffect> color(new ColorEffect( Vector3f (0.0, 1.0, 0.0)));
 		std::shared_ptr<SceneObjectEffect> phong(new PhongEffect( Vector3f (0.0, 0.0, 10.0)));
-		std::shared_ptr<SceneObjectEffect> reflect(new Reflect( ));
+		//std::shared_ptr<SceneObjectEffect> reflect(new Reflect( ));
+		std::shared_ptr<SceneObjectEffect> reflect(new CubeFresnelEffect( ));
 		std::shared_ptr<SceneObjectEffect> fresnel(new FresnelEffect( ));
+		std::shared_ptr<SceneObjectEffect> cubeFresnel(new CubeFresnelEffect( ));
 
 		// Our different objects
 		std::shared_ptr<SceneObject> sphere1(new Sphere(Vector3f( -9.0f, 0.0f,  -9.0f), 8.0f,  fresnel ));
-		std::shared_ptr<SceneObject> cubeReflect1(new Cube(Vector3f( -4.25f, -2.125f,  -5.0f), 2.0f,  fresnel ));
-		std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(  0.0f, -2.125f,  -5.0f), 2.0f,  fresnel ));
-		std::shared_ptr<SceneObject> cubeReflect3(new Cube(Vector3f(  0.0f,  2.125f,  -5.0f), 2.0f,  fresnel ));
-		std::shared_ptr<SceneObject> cubeReflect4(new Cube(Vector3f(  4.25f,  2.125f,  -5.0f), 2.0f,  fresnel ));
+		std::shared_ptr<SceneObject> sphere2(new Sphere(Vector3f( 0.0f, 0.0f,  -29.0f), 8.0f,  fresnel ));
+		std::shared_ptr<SceneObject> sphere3(new Sphere(Vector3f( 9.0f, 19.0f,  -29.0f), 8.0f,  fresnel ));
 
-		std::shared_ptr<SceneObject> cubeReflect(new Cube(Vector3f(  0.0f,  0.0f,  -3.0f), 5.0f,  fresnel ));
+		//std::shared_ptr<SceneObject> cubeReflect1(new Cube(Vector3f(  -34.0f, -24.0f,  -33.0f), 9.0f, cubeFresnel ));
+		//std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(   34.0f,  24.0f,  -33.0f), 9.0f, cubeFresnel ));
+
+		//std::shared_ptr<SceneObject> cubeReflect1(new Cube(Vector3f(  -34.0f, -24.0f, -13.0f), 2.0f, cubeFresnel ));
+		std::shared_ptr<SceneObject> cubeReflect1(new Cube(Vector3f(   0.0f,  0.0f,   -10.0f), 1.0f, reflect ));
+		std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(   2.2f,  0.0f,   -10.0f), 1.0f, reflect ));
+		std::shared_ptr<SceneObject> cubeReflect3(new Cube(Vector3f(   4.4f,  0.0f,   -10.0f), 1.0f, reflect ));
+		std::shared_ptr<SceneObject> cubeReflect4(new Cube(Vector3f(   4.4f,  2.2f,   -10.0f), 1.0f, reflect ));
+		//std::shared_ptr<SceneObject> cubeReflect5(new Cube(Vector3f(   6.6f,  2.2f,   -10.0f), 1.0f, reflect ));
+
+		//std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(   34.0f,  24.0f,  -33.0f), 9.0f, cubeFresnel ));
+		//std::shared_ptr<SceneObject> cubeReflect3(new Cube(Vector3f(   34.0f,  24.0f,  -33.0f), 9.0f, fresnel ));
+		//std::shared_ptr<SceneObject> cubeReflect4(new Cube(Vector3f(   34.0f, -24.0f,  -33.0f), 9.0f, fresnel ));
+
 
 		/*
+		std::shared_ptr<SceneObject> cubeReflect3(new Cube(Vector3f(  0.0f,  2.125f,  -5.0f), 2.0f,  fresnel ));
+		std::shared_ptr<SceneObject> cubeReflect4(new Cube(Vector3f(  4.25f,  2.125f,  -5.0f), 2.0f,  fresnel ));
+		std::shared_ptr<SceneObject> cubeReflect(new Cube(Vector3f(  0.0f,  0.0f,  -3.0f), 5.0f,  fresnel ));
 		std::shared_ptr<SceneObject> cubeReflect5(new Cube(Vector3f( -2.125f, -2.125f,  -15.0f), 2.0f,  fresnel ));
 		std::shared_ptr<SceneObject> cubeReflect6(new Cube(Vector3f( -2.125f,  2.125f,  -15.0f), 2.0f,  fresnel ));
 		std::shared_ptr<SceneObject> cubeReflect7(new Cube(Vector3f(  2.125f,  2.125f,  -15.0f), 2.0f,  fresnel ));
 		std::shared_ptr<SceneObject> cubeReflect8(new Cube(Vector3f(  2.125f, -2.125f,  -15.0f), 2.0f,  fresnel ));
-
 		std::shared_ptr<SceneObject> cubeReflect1(new Cube(Vector3f( 0.0f,  -2.5f,  -5.0f), 2.0f,  reflect ));
 		std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f( 4.5f,  -2.5f,  -5.0f), 2.0f,  reflect ));
 		std::shared_ptr<SceneObject> cubeReflect3(new Cube(Vector3f( 4.5f,   2.5f,  -5.0f), 2.0f,  fresnel ));
 		std::shared_ptr<SceneObject> cubeReflect4(new Cube(Vector3f( 8.0f,  2.5f,  -5.0f), 2.0f,  fresnel ));
 		
 		*/
-		// Cube map	
+		// Cube map
 		std::shared_ptr<SceneObject> cubeMap( new CubeMap( 
 			"cubemaps/SaintLazarusChurch3/posx.jpg", "cubemaps/SaintLazarusChurch3/negx.jpg", 
 			"cubemaps/SaintLazarusChurch3/posy.jpg", "cubemaps/SaintLazarusChurch3/negy.jpg",
 			"cubemaps/SaintLazarusChurch3/posz.jpg", "cubemaps/SaintLazarusChurch3/negz.jpg"  ) );
 
-		//rt->addSceneObject( cubeReflect );
-		rt->addSceneObject( sphere1 );
+		rt->addSceneObject( cubeReflect1 );
+		rt->addSceneObject( cubeReflect2 );
+		rt->addSceneObject( cubeReflect3 );
+		rt->addSceneObject( cubeReflect4 );
+		//rt->addSceneObject( cubeReflect5 );
+
+		//rt->addSceneObject( cube2 );
+		//rt->addSceneObject( sphere1 );
+		//rt->addSceneObject( sphere2 );
+		//rt->addSceneObject( sphere3 );
 /*
 		rt->addSceneObject( cubeReflect1 );
  * 		rt->addSceneObject( cubeReflect2 );

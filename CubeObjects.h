@@ -24,9 +24,9 @@ struct CubeFace
 			case FRONT:
 				std::cout << "========== FRONT =========\n";
 				points[0]= Vector3f( center.x + radius, center.y + radius, center.z + radius);
-				points[2]= Vector3f( center.x - radius, center.y + radius, center.z + radius);
-				points[1]= Vector3f( center.x + radius, center.y - radius, center.z + radius);
-				points[3]= Vector3f( center.x - radius, center.y - radius, center.z + radius);
+				points[2]= Vector3f( center.x + radius, center.y - radius, center.z + radius);
+				points[1]= Vector3f( center.x - radius, center.y - radius, center.z + radius);
+				points[3]= Vector3f( center.x + radius, center.y - radius, center.z + radius);
 				break;
 			case BACK:
 				std::cout << "========== BACK =========\n";
@@ -55,12 +55,6 @@ struct CubeFace
 				points[1]= Vector3f( center.x - radius, center.y + radius, center.z - radius);
 				points[2]= Vector3f( center.x - radius, center.y - radius, center.z - radius);
 				points[3]= Vector3f( center.x - radius, center.y - radius, center.z + radius);
-				/*
-				points[0]= Vector3f( center.x - radius, center.y + radius, center.z + radius);
-				points[1]= Vector3f( center.x - radius, center.y - radius, center.z + radius);
-				points[2]= Vector3f( center.x - radius, center.y + radius, center.z - radius);
-				points[3]= Vector3f( center.x - radius, center.y - radius, center.z - radius);
-				*/
 				break;
 			case RIGHT:
 				std::cout << "========== RIGHT =========\n";
@@ -71,6 +65,7 @@ struct CubeFace
 				break;
 			default:
 				break;
+
 
 		}
 		/*
@@ -84,8 +79,6 @@ struct CubeFace
 	
 		   
 		Math::cross_points( points, normal  );
-		if ( face == LEFT ) 
-			normal = -normal;
 
 		// Only normalize of at least one of the scalars are != 0
 		if ( normal.x != 0.0f || normal.y != 0.0f || normal.z != 0.0f )
@@ -95,9 +88,8 @@ struct CubeFace
 		std::cout << "Point 2: " << points[1] << std::endl;
 		std::cout << "Point 3: " << points[2] << std::endl;
 		std::cout << "Point 4: " << points[3] << std::endl;
+
 		std::cout << "Normal : " << normal << std::endl;
-		std::cout << "Radius : " << radius << std::endl;
-		std::cout << "Center : " << center << std::endl;
 	}
 
 	bool intersect( const Ray &ray, float &f )
@@ -177,9 +169,9 @@ struct CubeFace
 	{
 		if ( cubeFace == FRONT )
 		{
-			if ( point.x < points[0].x && point.x > points[2].x)
+			if ( point.x < points[0].x && point.x > points[1].x)
 			{
-				if ( point.y < points[0].y && point.y > points[3].y)
+				if ( point.y < points[0].y && point.y > points[1].y)
 				{
 					return true;
 				}
@@ -208,13 +200,11 @@ struct CubeFace
 			{
 				if ( point.z < points[0].z && point.z > points[1].z)
 				{
-					//std::cout << "Bottom  x collision\n";
 					return true;
 				}
 			}
 		} else if ( cubeFace == LEFT )
 		{
-			//std::cout << "left" << std::endl;
 			if ( point.y < points[0].y && point.y > points[2].y)
 			{
 				if ( point.z < points[0].z && point.z > points[1].z)

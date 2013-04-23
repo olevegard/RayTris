@@ -46,6 +46,5 @@ public:
 private:
 	std::vector<float> data;
 	float data_test[1600 * 1200 * 3];
-	//float data_test[400 * 300 * 3];
 	unsigned int width, height;
 };
