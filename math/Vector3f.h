@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <ostream>
+#include <sstream>
 
 struct Vector3f{
 	Vector3f(float x, float y, float z)
@@ -156,7 +157,7 @@ namespace Math
 	
 	Vector3f refract( const Vector3f &vec, const Vector3f &normal, float eta );
 
-	Vector3f refract_test( const Vector3f &vec, const Vector3f &normal, float eta0, float eta1 );
+	Vector3f refract_test( const Vector3f &vec, const Vector3f &normal, float eta, std::stringstream &log  );
 
 	Vector3f min( const Vector3f &vec1, const Vector3f &vec2);
 

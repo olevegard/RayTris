@@ -19,7 +19,7 @@ public:
 	  * @param t If intersection found, this is set so that t*r is the point of intersection
 	  * @return true if intersection found, false otherwise
 	  */
-	virtual float intersect(const Ray& r) = 0;
+	virtual float intersect(const Ray& r, int &face) = 0;
 
 	/**
 	  * Performs recursive raytracing of the elements in scene
@@ -28,7 +28,7 @@ public:
 	  * @param color The color to set
 	  * @param depth The recursion depth of this tracing
 	  */
-	virtual Vector3f rayTrace(Ray &ray, const float& t, RayTracerState& state) = 0;
+	virtual Vector3f rayTrace(Ray &ray, const float& t, RayTracerState& state, int face ) = 0;
 
 protected:
 	std::shared_ptr<SceneObjectEffect> effect;

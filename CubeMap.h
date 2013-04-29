@@ -41,7 +41,7 @@ public:
 	  * Ray-trace function that returns what texel you hit in the
 	  * cube map, since any ray will hit some point in the cube map
 	  */
-	Vector3f rayTrace(Ray &ray, const float& t, RayTracerState& state) {
+	Vector3f rayTrace(Ray &ray, const float& t, RayTracerState& state, int face) {
 
 		////std::cout << "Ray tracing cubemap\n";
 		Vector3f out_color(0.0f);
@@ -159,7 +159,8 @@ public:
 	  * A ray will always hit the cube map by definition, but the point of intersection
 	  * is as far away as possible
 	  */
-	float intersect(const Ray& r) {
+	float intersect(const Ray& r, int &face ) {
+		face = -1;
 		return std::numeric_limits<float>::max();
 	}
 

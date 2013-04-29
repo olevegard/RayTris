@@ -26,27 +26,30 @@ public:
 
 	virtual ~Cube(){}
 
-	float intersect(const Ray& ray)
+	float intersect(const Ray& ray, int &face )
 	{
 		float f = 99999999999.0f;
 		float f_min = f;
 		bool found = false;
 		
-		for ( int i = 0; i < 6; ++i ) 
-		{
+		for ( int i = 0; i < 6; ++i )
+		{	
+			//if ( i == 4 ) continue;
+
 			if ( cube[i].intersect( ray, f ))
 			{
+				//std::cout << "intersect : " << f << std::endl;
+					
 				if ( f < f_min )
 				{
 					found = true;
 					f_min = f;
-					
+					face = i;
 					normal = cube[i].normal;
 				}
 			}
 		}
 		
-		// 3, 4 : partly unclean
 		if ( found && f_min < 99.0f )
 		{
 			return f_min;
@@ -60,6 +63,7 @@ public:
 	  */
 	const Vector3f computeNormal(const Ray& ray, const float& t)
 	{
+		/*
 		// Calc ray intersect point
 		Vector3f point = ray.getOrigin() + ( ray.getDirection() * t );
 
@@ -68,14 +72,16 @@ public:
 			if ( cube[i].CheckFaceCollision( point ) )
 				return cube[i].normal;
 		}
-		
+		*/
 		return normal;
 	}
 
-	Vector3f rayTrace(Ray &ray, const float& t, RayTracerState& state)
+	Vector3f rayTrace(Ray &ray, const float& t, RayTracerState& state, int face )
 	{
+		if ( face < 0 || face > 5 )
+			return Vector3f( 0.0f );
 		// Get normal and ray trace with the assigned effect 
-		Vector3f normal = ( computeNormal(ray, t));
+		Vector3f normal = cube[face].normal; 
 		
 		return effect->rayTrace(ray, t, normal, state);
 	}

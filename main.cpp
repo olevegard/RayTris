@@ -42,11 +42,13 @@ int main(int argc, char *argv[]) {
 		//std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(   34.0f,  24.0f,  -33.0f), 9.0f, cubeFresnel ));
 
 		//std::shared_ptr<SceneObject> cubeReflect1(new Cube(Vector3f(  -34.0f, -24.0f, -13.0f), 2.0f, cubeFresnel ));
-		std::shared_ptr<SceneObject> cubeReflect1(new Cube(Vector3f(   0.0f,  0.0f,   -10.0f), 1.0f, reflect ));
-		std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(   2.2f,  0.0f,   -10.0f), 1.0f, reflect ));
-		std::shared_ptr<SceneObject> cubeReflect3(new Cube(Vector3f(   4.4f,  0.0f,   -10.0f), 1.0f, reflect ));
-		std::shared_ptr<SceneObject> cubeReflect4(new Cube(Vector3f(   4.4f,  2.2f,   -10.0f), 1.0f, reflect ));
-		//std::shared_ptr<SceneObject> cubeReflect5(new Cube(Vector3f(   6.6f,  2.2f,   -10.0f), 1.0f, reflect ));
+		//std::shared_ptr<SceneObject> cubeReflect1(new Cube(Vector3f(   -28.0f,  28.0f,   -33.0f), 8.0f, cubeFresnel ));
+		//std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(   -1.0f,  8.0f,   -33.0f), 9.0f, cubeFresnel ));
+		std::shared_ptr<SceneObject> cubeTest(new Cube(Vector3f(   -4.0f,  0.0f,   -5.0f),  5.0f, cubeFresnel ));
+		std::shared_ptr<SceneObject> sphereTest(new Sphere(Vector3f(    7.0f,  0.0f,   -5.0f),  5.0f, fresnel ));
+		std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(    9.5f,  0.0f,   -5.0f),  5.0f, cubeFresnel ));
+		std::shared_ptr<SceneObject> cubeReflect3(new Cube(Vector3f(  -10.0f,  0.0f,   -5.0f),  1.0f, cubeFresnel ));
+		std::shared_ptr<SceneObject> cubeReflect4(new Cube(Vector3f(  -10.0f,  2.5f,   -5.0f),  1.0f, cubeFresnel ));
 
 		//std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(   34.0f,  24.0f,  -33.0f), 9.0f, cubeFresnel ));
 		//std::shared_ptr<SceneObject> cubeReflect3(new Cube(Vector3f(   34.0f,  24.0f,  -33.0f), 9.0f, fresnel ));
@@ -73,10 +75,12 @@ int main(int argc, char *argv[]) {
 			"cubemaps/SaintLazarusChurch3/posy.jpg", "cubemaps/SaintLazarusChurch3/negy.jpg",
 			"cubemaps/SaintLazarusChurch3/posz.jpg", "cubemaps/SaintLazarusChurch3/negz.jpg"  ) );
 
-		rt->addSceneObject( cubeReflect1 );
-		rt->addSceneObject( cubeReflect2 );
-		rt->addSceneObject( cubeReflect3 );
-		rt->addSceneObject( cubeReflect4 );
+		//rt->addSceneObject( sphereTest );
+		rt->addSceneObject( cubeTest );
+		//rt->addSceneObject( cubeReflect2 );
+
+		//rt->addSceneObject( cubeReflect3 );
+		//rt->addSceneObject( cubeReflect4 );
 		//rt->addSceneObject( cubeReflect5 );
 
 		//rt->addSceneObject( cube2 );

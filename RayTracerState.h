@@ -43,12 +43,11 @@ public:
 			return Vector3f(0.0f);  
 		}
 		
-		//Loop through all the objects, to find the closest intersection, if any
-		//This is essentially just ray-casting
+		//Loop through all the objects, to find the closest intersection, if any. This is essentially just ray-casting
 		for (unsigned int k=0; k<scene.size(); ++k) 
 		{
-			t = scene.at(k)->intersect(ray);
-			//std::cout << "t : " << t << std::endl;
+			int face = -1;
+			t = scene.at(k)->intersect(ray, face);
 
 			if (t > z_offset && t <= t_min) 
 			{
@@ -67,7 +66,7 @@ public:
 			//glm::vec3 reflected = glm::vec2( glm::reflect(ray.
 			//std::cout << "Spawning new ray\n";
 			//std::cout << "\tCollision with id ; " << k_min << std::endl;
-			return scene.at(k_min)->rayTrace(ray, t_min, *this);
+			return scene.at(k_min)->rayTrace(ray, t_min, *this, 0);
 		}
 		else {
 			std::cout << "no intersection\n";

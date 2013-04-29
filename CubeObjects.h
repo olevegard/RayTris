@@ -24,15 +24,15 @@ struct CubeFace
 			case FRONT:
 				std::cout << "========== FRONT =========\n";
 				points[0]= Vector3f( center.x + radius, center.y + radius, center.z + radius);
-				points[2]= Vector3f( center.x + radius, center.y - radius, center.z + radius);
-				points[1]= Vector3f( center.x - radius, center.y - radius, center.z + radius);
+				points[1]= Vector3f( center.x + radius, center.y - radius, center.z + radius);
+				points[2]= Vector3f( center.x - radius, center.y - radius, center.z + radius);
 				points[3]= Vector3f( center.x + radius, center.y - radius, center.z + radius);
 				break;
 			case BACK:
 				std::cout << "========== BACK =========\n";
 				points[0]= Vector3f( center.x - radius, center.y - radius, center.z - radius);
-				points[1]= Vector3f( center.x - radius, center.y + radius, center.z - radius);
-				points[2]= Vector3f( center.x + radius, center.y - radius, center.z - radius);
+				points[2]= Vector3f( center.x - radius, center.y + radius, center.z - radius);
+				points[1]= Vector3f( center.x + radius, center.y - radius, center.z - radius);
 				points[3]= Vector3f( center.x + radius, center.y + radius, center.z - radius);
 				break;
 			case TOP:
@@ -131,7 +131,7 @@ struct CubeFace
 		if ( den == 0 && num != 0 ) 
 		{
 			// No collision
-			return true;
+			return false;
 		}
 
 		else if ( den == 0 && num == 0 )
@@ -169,18 +169,18 @@ struct CubeFace
 	{
 		if ( cubeFace == FRONT )
 		{
-			if ( point.x < points[0].x && point.x > points[1].x)
+			if ( point.x < points[0].x && point.x > points[2].x)
 			{
-				if ( point.y < points[0].y && point.y > points[1].y)
+				if ( point.y < points[0].y && point.y > points[2].y)
 				{
 					return true;
 				}
 			}
 		} else if ( cubeFace == BACK )
 		{
-			if ( point.x > points[0].x && point.x < points[2].x)
+			if ( point.x > points[0].x && point.x < points[1].x)
 			{
-				if ( point.y > points[0].y && point.y < points[1].y)
+				if ( point.y > points[0].y && point.y < points[2].y)
 				{
 					return true;
 				}

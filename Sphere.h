@@ -24,7 +24,8 @@ public:
 	/**
 	  * Computes the ray-sphere intersection
 	  */
-	float intersect(const Ray& r) {
+	float intersect(const Ray& r, int &face) {
+		face = -1;
 		//const float z_offset = 10e-4f;
 		const Vector3f &d = r.getDirection();
 		const Vector3f &p0 = r.getOrigin();
@@ -92,7 +93,7 @@ public:
 		return normal;
 	}
 
-	Vector3f rayTrace(Ray &ray, const float& t, RayTracerState& state)
+	Vector3f rayTrace(Ray &ray, const float& t, RayTracerState& state, int face)
 	{
 
 		// Get normal and ray trace with the assigned effect 
