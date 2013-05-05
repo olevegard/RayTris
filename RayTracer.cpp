@@ -50,7 +50,7 @@ void RayTracer::render() {
 
 	//For every pixel, ray-trace using multiple CPUs
 #ifdef _OPENMP
-#pragma omp set nested
+//#pragma omp set nested
 #pragma omp parallel for
 	for (int j=0; j<static_cast<int>(fb->getHeight()); ++j) {
 #else

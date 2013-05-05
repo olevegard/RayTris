@@ -28,10 +28,10 @@ int main(int argc, char *argv[]) {
 		// Our different effects...
 		std::shared_ptr<SceneObjectEffect> color(new ColorEffect( Vector3f (0.0, 1.0, 0.0)));
 		std::shared_ptr<SceneObjectEffect> phong(new PhongEffect( Vector3f (0.0, 0.0, 10.0)));
-		//std::shared_ptr<SceneObjectEffect> reflect(new Reflect( ));
-		std::shared_ptr<SceneObjectEffect> reflect(new CubeFresnelEffect( ));
+		std::shared_ptr<SceneObjectEffect> reflect(new Reflect( ));
 		std::shared_ptr<SceneObjectEffect> fresnel(new FresnelEffect( ));
 		std::shared_ptr<SceneObjectEffect> cubeFresnel(new CubeFresnelEffect( ));
+		std::shared_ptr<SceneObjectEffect> normal(new NormalEffect( ));
 
 		// Our different objects
 		std::shared_ptr<SceneObject> sphere1(new Sphere(Vector3f( -9.0f, 0.0f,  -9.0f), 8.0f,  fresnel ));
@@ -44,11 +44,12 @@ int main(int argc, char *argv[]) {
 		//std::shared_ptr<SceneObject> cubeReflect1(new Cube(Vector3f(  -34.0f, -24.0f, -13.0f), 2.0f, cubeFresnel ));
 		//std::shared_ptr<SceneObject> cubeReflect1(new Cube(Vector3f(   -28.0f,  28.0f,   -33.0f), 8.0f, cubeFresnel ));
 		//std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(   -1.0f,  8.0f,   -33.0f), 9.0f, cubeFresnel ));
-		std::shared_ptr<SceneObject> cubeTest(new Cube(Vector3f(   -4.0f,  0.0f,   -5.0f),  5.0f, cubeFresnel ));
-		std::shared_ptr<SceneObject> sphereTest(new Sphere(Vector3f(    7.0f,  0.0f,   -5.0f),  5.0f, fresnel ));
-		std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(    9.5f,  0.0f,   -5.0f),  5.0f, cubeFresnel ));
-		std::shared_ptr<SceneObject> cubeReflect3(new Cube(Vector3f(  -10.0f,  0.0f,   -5.0f),  1.0f, cubeFresnel ));
-		std::shared_ptr<SceneObject> cubeReflect4(new Cube(Vector3f(  -10.0f,  2.5f,   -5.0f),  1.0f, cubeFresnel ));
+		//std::shared_ptr<SceneObject> cubeTest(new Cube(Vector3f(  -10.0f,  -19.0f,   -18.0f),  5.0f, reflect ));
+		std::shared_ptr<SceneObject> cubeTest(new Cube(Vector3f(  0.0f,  0.0f,   -18.0f),  5.0f, reflect ));
+		std::shared_ptr<SceneObject> sphereTest(new Sphere(Vector3f(    7.0f,  0.0f,   -5.0f),  5.0f, reflect ));
+		//std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(    9.5f,  0.0f,   -5.0f),  5.0f, cubeFresnel ));
+		//std::shared_ptr<SceneObject> cubeReflect3(new Cube(Vector3f(  -10.0f,  0.0f,   -5.0f),  1.0f, cubeFresnel ));
+		//std::shared_ptr<SceneObject> cubeReflect4(new Cube(Vector3f(  -10.0f,  2.5f,   -5.0f),  1.0f, cubeFresnel ));
 
 		//std::shared_ptr<SceneObject> cubeReflect2(new Cube(Vector3f(   34.0f,  24.0f,  -33.0f), 9.0f, cubeFresnel ));
 		//std::shared_ptr<SceneObject> cubeReflect3(new Cube(Vector3f(   34.0f,  24.0f,  -33.0f), 9.0f, fresnel ));

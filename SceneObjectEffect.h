@@ -38,6 +38,21 @@ public:
 private:
 	Vector3f color;
 };
+/**
+  * The color effect simply colors any point with the same color
+  */
+class NormalEffect : public SceneObjectEffect {
+public:
+	NormalEffect()
+	{
+	}
+
+	Vector3f rayTrace(Ray &ray, const float& t, const Vector3f& normal, RayTracerState& state) {
+		return normal;
+	}
+
+private:
+};
 /** 
 */
 class Reflect : public SceneObjectEffect {
@@ -49,13 +64,17 @@ public:
 	virtual ~Reflect(){}
 		Vector3f rayTrace(Ray &ray, const float& t, const Vector3f& normal, RayTracerState& state)
 	{
+		Vector3f dir_n = Math::normalize ( ray.getDirection() );
+		//Vector3f normal_n = Math::normalize ( normal );
+
+
 		Ray ray_reflect = ray.spawn(
-			(t * 1.001 ),
-			Math::reflect(ray.getDirection(), normal ),
+			(t * 1.00001 ),
+			Math::reflect( dir_n, normal ),
 			0.9f
 		); 
-	
-		return state.rayTrace(ray_reflect) * ray_reflect.getEnergy(); 
+
+		return state.rayTrace(ray_reflect) * ray_reflect.getEnergy();
 	}
 
 private:
@@ -299,7 +318,7 @@ public:
 	virtual ~CubeFresnelEffect(){}
 	Vector3f rayTrace(Ray &ray, const float& t, const Vector3f& normal, RayTracerState& state) 
 	{
-		Vector3f normal_n = Math::normalize ( normal );
+		Vector3f normal_n = Math::normalize ( -normal );
 		Vector3f dir_n = Math::normalize ( ray.getDirection()  );
 
 		// Calc dot to determine if we are entering or entering the material. 
@@ -307,6 +326,7 @@ public:
 		
 		//std::cout << "dot : " << dot << std::endl;
 		// Entering materiall..
+		/*
 		if (  dot  < 0.0f )
 		{
 			// Air to water... ( eta0 to eta1 )
@@ -321,7 +341,7 @@ public:
 		
 			std::stringstream log_ss;
 			// Calc refract direction
-			Vector3f refractDir = Math::refract_test( dir_n, -normal_n,  eta01, log_ss ) ;
+			Vector3f refractDir = Math::refract_test( dir_n, normal_n,  eta01, log_ss ) ;
 			std::string str = log_ss.str();	
 			log  << str;// << std::endl;
 			// Check for total inner refraction
@@ -348,17 +368,20 @@ public:
 
 			//out_color = Vector3f( 1.0f, 0.0f, 0.0f );
 
-		 }  else { // exiting  
+		 }  else 
+		 */
+		{ // exiting  
 
-			// eta01 = eta0 / eta1;
-			eta01 = eta1 / eta0;
+			//std::cout << "normal : " << normal_n << std::endl;
+			//eta01 = eta0 / eta1;
+			eta01 = eta1 / eta0;//Current
 			 //std::cout << "exiting...\n";
 			// Water to air
 			R01 =  ( (( eta1 - eta0 ) /  ( eta1 + eta0 )) *  ( (eta1 - eta0) /  (eta1 + eta0)) );
 
 			// Calc fresnel term  using Schlick's approximation
 			//float Rf = R01 + (1.0 - R01) * pow( ( 1.0 - fabs ( dot ) ), 5.0);
-			float Rf = R01 + (1.0 - R01) * pow( ( 1.0 - ( dot ) ), 5.0);
+			float Rf = R01 + (1.0 - R01) * pow( ( 1.0 - ( dot ) ), 5.0); // Current
 
 			// Relfect colour
 			Ray ray_reflect = ray.spawn((t  * 1.00001), Math::reflect(dir_n, normal_n), reflectiveness); 
@@ -368,28 +391,28 @@ public:
 
 			std::stringstream log_ss;
 			// Calc refract direction
-			Vector3f refractDir = Math::refract_test( dir_n, -normal_n,  eta01, log_ss ) ;
+			Vector3f refractDir = Math::refract_test( dir_n, normal_n,  eta01, log_ss ) ;
 			std::string str = log_ss.str();
 			log_ss.str("");	
 
-			if ( refractDir.x == 0.0f && refractDir.y == 0.0f && refractDir.z == 0 && fabs( dot )  > 0.7f) std::cout <<  str << std::endl;
+			//if ( refractDir.x == 0.0f && refractDir.y == 0.0f && refractDir.z == 0 && fabs( dot )  > 0.7f) std::cout <<  str << std::endl;
 
 			// Check for total inner refraction
-			//if ( refractDir.x == 0.0f && refractDir.y == 0.0f && refractDir.z == 0 ) return reflect;
+			if ( refractDir.x == 0.0f && refractDir.y == 0.0f && refractDir.z == 0 ) return Vector3f( 0.0f );
 
-			Ray ray_refract = ray.spawn((t * 1.00001 ), refractDir , reflectiveness);
+			Ray ray_refract = ray.spawn((t * 1.001 ), refractDir , reflectiveness);
 			Vector3f refract = state.rayTrace(ray_refract); // Refract color
 
-			//out_color = Math::mix(  reflect, refract, Rf);
+			out_color = Math::mix(  reflect, refract, Rf);
 			//out_color = Math::mix(  refract, reflect, Rf); // Current
-			out_color = refract;
-
+			//out_color = refract;
+/*
 			if ( Rf >= 1.0f && Rf <= 0.0f)
 			{
 				std::cout << "exitig Rf : " << Rf << std::endl;
 				std::cin.ignore();
 			}
-			
+	*/		
 
 		 }
 

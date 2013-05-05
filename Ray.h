@@ -48,6 +48,7 @@ public:
 		else 
 			offset = 10e-5f;
 
+
 		// Create new ray with our offset 
 		Ray r( getOrigin() + (t + offset ) * getDirection(), d);
 
